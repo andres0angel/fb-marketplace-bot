@@ -1,0 +1,7 @@
+.env
+seen_ads.json
+__pycache__/
+*.pyc
+.venv/
+*.egg-info/
+dist/

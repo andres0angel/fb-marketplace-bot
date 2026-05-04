@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Buscador Vehículos · Antioquia</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+
+  <!-- Grain overlay -->
+  <div class="grain"></div>
+
+  <!-- Header -->
+  <header>
+    <div class="header-left">
+      <div class="logo-mark">
+        <span class="logo-dot"></span>
+        <span class="logo-dot"></span>
+        <span class="logo-dot"></span>
+      </div>
+      <div>
+        <h1>Buscador Vehículos</h1>
+        <p class="subtitle">Marketplace · Antioquia</p>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="status-pill" id="statusPill">
+        <span class="status-dot"></span>
+        <span id="statusText">Conectando...</span>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-ghost" id="btnClear" title="Limpiar historial">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+          Limpiar
+        </button>
+        <button class="btn btn-primary" id="btnSearch">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <span id="btnSearchText">Buscar ahora</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Stats bar -->
+  <section class="stats-bar" id="statsBar">
+    <div class="stat-card">
+      <span class="stat-label">Total encontrados</span>
+      <span class="stat-value" id="statTotal">—</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-card">
+      <span class="stat-label">Spark GT</span>
+      <span class="stat-value" id="statSparkGT">—</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-card">
+      <span class="stat-label">Hyundai i10</span>
+      <span class="stat-value" id="statI10">—</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-card">
+      <span class="stat-label">Otros</span>
+      <span class="stat-value" id="statOther">—</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-card">
+      <span class="stat-label">Precio promedio</span>
+      <span class="stat-value" id="statAvgPrice">—</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-card">
+      <span class="stat-label">Búsqueda cada</span>
+      <span class="stat-value" id="statInterval">—</span>
+    </div>
+  </section>
+
+  <!-- Filters toolbar -->
+  <div class="toolbar">
+    <div class="filters">
+      <button class="filter-btn active" data-filter="all">Todos</button>
+      <button class="filter-btn" data-filter="spark_gt">
+        <span class="badge" style="background:#f97316"></span> Spark GT
+      </button>
+      <button class="filter-btn" data-filter="hyundai_i10">
+        <span class="badge" style="background:#3b82f6"></span> Hyundai i10
+      </button>
+      <button class="filter-btn" data-filter="other">
+        <span class="badge" style="background:#8b5cf6"></span> Otros
+      </button>
+    </div>
+    <div class="search-box">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="searchInput" placeholder="Filtrar por título, ciudad..." />
+    </div>
+  </div>
+
+  <!-- Toast notification -->
+  <div class="toast" id="toast"></div>
+
+  <!-- Main content -->
+  <main>
+    <div class="ads-grid" id="adsGrid">
+      <!-- Cards go here -->
+    </div>
+
+    <div class="empty-state" id="emptyState" style="display:none">
+      <div class="empty-icon">
+        <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+      </div>
+      <p>No hay anuncios todavía.</p>
+      <p class="empty-hint">Haz clic en <strong>Buscar ahora</strong> para empezar.</p>
+    </div>
+
+    <div class="loading-state" id="loadingState">
+      <div class="spinner"></div>
+      <p>Cargando anuncios...</p>
+    </div>
+  </main>
+
+  <!-- Ad detail modal -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal" id="modal">
+      <button class="modal-close" id="modalClose">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.min.js"></script>
+  <script src="/static/js/app.js"></script>
+</body>
+</html>

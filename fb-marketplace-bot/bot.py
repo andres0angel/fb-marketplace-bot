@@ -15,6 +15,14 @@ from scraper import run_all_searches
 from filters import apply_filters, parse_price
 from db import is_seen, mark_seen, get_all_ads, clear_db
 
+def _emit_to_web(ad: dict):
+    """Notifica al dashboard web cuando se encuentra un anuncio nuevo."""
+    try:
+        from web import emit_new_ad
+        emit_new_ad(ad)
+    except Exception:
+        pass  # El web server puede no estar corriendo
+
 logger = logging.getLogger(__name__)
 
 TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN", "")
@@ -210,6 +218,7 @@ async def job_busqueda_automatica(context: ContextTypes.DEFAULT_TYPE):
             if not passes:
                 continue
             mark_seen(ad)
+            _emit_to_web(ad)
             for cid in chat_ids:
                 nuevos_por_chat[cid].append(ad)
 
